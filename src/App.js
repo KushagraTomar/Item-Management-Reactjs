@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-require('dotenv').config();
 
 const App = () => {
   const BASE_URL = `http://13.200.246.117`;
