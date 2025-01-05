@@ -3,7 +3,7 @@ import axios from "axios";
 require('dotenv').config();
 
 const App = () => {
-  const BASE_URL = `${process.env.BASE_URL}`;
+  const BASE_URL = `http://13.200.246.117`;
   const [items, setItems] = useState([]);
   const [form, setForm] = useState({ name: "", description: "", price: "", image: null });
   const [editingId, setEditingId] = useState(null);
