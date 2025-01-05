@@ -1,0 +1,28 @@
+name: deploy react-js app
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout source
+              uses: actions/checkout@v4
+            - name: login to dockerhub
+              run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+            - name: build docker image
+              run: docker build -t ${{secrets.DOCKER_USERNAME}}/reactjs-aws-deploy .
+            - name: publish image to dockerhub
+              run: docker push ${{secrets.DOCKER_USERNAME}}/reactjs-aws-deploy:latest
+    
+    deploy:
+        needs: build
+        runs-on: self-hosted
+        steps:
+            - name: pull image from docker hub
+              run: docker pull ${{secrets.DOCKER_USERNAME}}/reactjs-aws-deploy:latest
+            - name: run docker container
+              run: docker run -d -p 3000:80 --name reactjs-aws-deploy-container ${{secrets.DOCKER_USERNAME}}/reactjs-aws-deploy
