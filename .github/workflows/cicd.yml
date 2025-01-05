@@ -25,4 +25,4 @@ jobs:
             - name: pull image from docker hub
               run: docker pull ${{secrets.DOCKER_USERNAME}}/reactjs-aws-deploy:latest
             - name: run docker container
-              run: docker run -d -p 3000:80 --name reactjs-aws-deploy-container ${{secrets.DOCKER_USERNAME}}/reactjs-aws-deploy
+              run: docker run -d -p 3000:80 --name reactjs-aws-deploy-container -e BASE_URL='${{secrets.BASE_URL}}' ${{secrets.DOCKER_USERNAME}}/reactjs-aws-deploy

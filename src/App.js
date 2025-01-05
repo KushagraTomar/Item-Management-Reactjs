@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+require('dotenv').config();
 
 const App = () => {
+  const BASE_URL = `${process.env.BASE_URL}`;
   const [items, setItems] = useState([]);
   const [form, setForm] = useState({ name: "", description: "", price: "", image: null });
   const [editingId, setEditingId] = useState(null);
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/items");
+      const response = await axios.get(`${BASE_URL}:3001/items`);
       setItems(response.data);
     } catch (error) {
       console.error("Error fetching items:", error);
@@ -41,12 +43,12 @@ const App = () => {
 
     try {
       if (editingId) {
-        await axios.put(`http://localhost:3001/item/${editingId}`, formData, {
+        await axios.put(`${BASE_URL}:3001/item/${editingId}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         setEditingId(null);
       } else {
-        await axios.post("http://localhost:3001/items", formData, {
+        await axios.post(`${BASE_URL}:3001/items`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -69,7 +71,7 @@ const App = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/item/${id}`);
+      await axios.delete(`${BASE_URL}:3001/item/${id}`);
       fetchItems();
     } catch (error) {
       console.error("Error deleting item:", error);
